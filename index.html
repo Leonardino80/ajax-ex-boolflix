@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
+    <title>boolflix</title>
+  </head>
+  <body>
+    <header>
+      <div class="header_left">
+        <h1>Boolflix</h1>
+      </div>
+      <div class="header_right">
+        <input type="text" id="request">
+        <button id="ricerca">Cerca</button>
+      </div>
+    </header>
+
+    <div class="container">
+      <div id="locandine">
+      </div>
+    </div>
+
+    <script id="template_scheda" type="text/x-handlebars-template">
+      <div class="scheda">
+        <h3>Titolo : <span>{{title}}<span><h3>
+        <p>Titolo originale : </p> <span>{{original_title}}</span>
+        <p>Lingua : <span>{{language}}</span></p>
+        <p>Punteggio : <span>{{{rating}}}</span></p>
+        <p>Punteggio numerico : <span>{{rating_numerico}}</span></p>
+      </div>
+    </script>
+    <script src="main.js" charset="utf-8"></script>
+  </body>
+</html>

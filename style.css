@@ -1,0 +1,94 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header{
+  height: 80px;
+  background-color: black;
+  position: fixed;
+  top:0;
+  width: 100%;
+}
+
+.header_left{
+  float:left;
+  width: 30%;
+}
+
+.header_left h1{
+  text-transform: uppercase;
+  color: red;
+  font-size: 25px;
+  line-height: 80px;
+  margin-left: 30px;
+}
+
+.header_right{
+  float: left;
+  width: 70%;
+  text-align: right;
+}
+
+.header_right input{
+  padding: 5px;
+  height: 40px;
+  margin-top: 20px;
+}
+
+.header_right button{
+  height: 40px;
+  margin-top: 20px;
+  background-color: red;
+  color:white;
+  border:0;
+  margin-right: 30px;
+  padding: 0 10px;
+}
+
+#locandina{
+  width: 1200px;
+  margin:0 auto;
+}
+
+#locandine{
+
+  float:left;
+  margin:20px;
+  width: 1200px;
+  border:1px solid black;
+  padding: 10px;
+}
+
+p{
+  color:black;
+  font-size: 10px;
+  margin: 5px auto;
+}
+
+span,h1 {
+  color:red;
+}
+
+h3{
+  padding: 5px 0;
+}
+.scheda{
+  background-color: white;
+  margin: 20px;
+  padding: 30px;
+  height: 250px;
+  width: 250px;
+  text-align: left;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+
+.container{
+  width: 1600px;
+  overflow-y: auto;
+  padding-top:100px;
+  margin: 0 auto;
+}
