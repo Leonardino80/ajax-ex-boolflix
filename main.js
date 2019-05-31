@@ -8,13 +8,68 @@ $(document).ready(function(){
   $('#ricerca').click(function(){
     $('#locandine').html('');
     var richiesta = $('#request').val();
-    console.log(richiesta);
+    chiamata_ajax(richiesta);
+  })
 
+  $('#request').keyup(function(event){
+    if (event.which == 13) {
+      $('#locandine').html('');
+      var richiesta = $('#request').val();
+      chiamata_ajax(richiesta);
+    }
+  })
+
+  function arrotonda_voto(voto){
+    var voto_arrotondato = Math.ceil(voto/2);
+    return voto_arrotondato;
+  }
+
+  function disegna_stelle(stelline_length){
+    var stelline = '<i class="fas fa-star"></i>';
+    var stelline_vuote = '<i class="far fa-star"></i>';
+    var result = '';
+    for (var i = 0; i < 5; i++) {
+      if (i < stelline_length) {
+        result = result.concat(stelline);
+      } else{
+        result = result.concat(stelline_vuote);
+      }
+    }
+    return result
+  }
+
+  function disegna_bandiere(lang){
+    var result ;
+
+    switch ( lang ) {
+      case 'it':
+        result = '<img class="bandiere" src="' + lang + '.png">'
+        break;
+      case 'en':
+        result = '<img class="bandiere" src="' + lang + '.png">'
+        break;
+      case 'ko':
+        result = '<img class="bandiere" src="' + lang + '.png">'
+        break;
+      case 'de':
+        result = '<img class="bandiere" src="' + lang + '.png">'
+        break;
+      case 'fr':
+        result = '<img class="bandiere" src="' + lang + '.png">'
+        break;
+      default:
+        result = lang;
+        break;
+    }
+    return result;
+  }
+
+  function chiamata_ajax(testo_input){
     $.ajax({
     	'url': api_url_base + 'search/movie',
     	'data': {
       	'api_key' : 'e1a570909ce0a6c2e9851825c79f7b37',
-      	'query' : richiesta,
+      	'query' : testo_input,
         'language' : 'it'
     	},
     	'method':'GET',
@@ -22,24 +77,19 @@ $(document).ready(function(){
       	var movies = data_response.results;
         console.log(movies);
 
-
-
-
-
         for (var i = 0; i < movies.length; i++) {
           var movie = movies[i];
           var titolo = movie.title;
           var titolo_originale = movie.original_title;
-          var lingua = movie.original_language;
+          var lingua = disegna_bandiere(movie.original_language);
           var voto = movie.vote_average;
           var voto_ridotto =  arrotonda_voto(voto);
-          var voto_in_stelle = stellette(voto_ridotto)
+          var voto_in_stelle = disegna_stelle(voto_ridotto);
           var handlebars_variable = {
             'title' : titolo,
             'original_title' : titolo_originale,
             'language' : lingua,
             'rating' : voto_in_stelle,
-            'rating_numerico' : voto
           }
           var html_locandina = template_function(handlebars_variable);
           $('#locandine').append(html_locandina);
@@ -50,37 +100,8 @@ $(document).ready(function(){
     	}
     });
 
-  })
-
-  function arrotonda_voto(voto){
-    var voto_arrotondato = Math.ceil(voto/2);
-    return voto_arrotondato;
   }
 
-  function stellette(stelle){
-    var stelline;
-    switch ( stelle ) {
 
-      case 0:
-        stelline = "-";
-        break;
-      case 1:
-        stelline = '<i class="fas fa-star"></i>';
-        break;
-      case 2:
-        stelle = '<i class="fas fa-star"></i><i class="fas fa-star"></i>';
-        break;
-      case 3:
-        stelline = '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>'
-        break;
-      case 4:
-        stelline = '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>';
-        break;
-      case 5:
-        stelline = '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>';
-        break;
-    }
-    return stelline;
-  }
 
 })
