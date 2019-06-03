@@ -6,6 +6,7 @@ $(document).ready(function(){
   var template_function = Handlebars.compile(source);
 
   $('#ricerca').click(function(){
+    // ricerca si attiva al click sul pulsante
     $('#locandine').html('');
     var richiesta = $('#request').val();
     chiamata_ajax(richiesta);
@@ -13,6 +14,7 @@ $(document).ready(function(){
 
   $('#request').keyup(function(event){
     if (event.which == 13) {
+      // ricerca si attiva al tasto invio dell input
       $('#locandine').html('');
       var richiesta = $('#request').val();
       chiamata_ajax(richiesta);
@@ -20,6 +22,7 @@ $(document).ready(function(){
   })
 
   function arrotonda_voto(voto){
+    // dal voto decimale arrivo al numero di stelline
     var voto_arrotondato = Math.ceil(voto/2);
     return voto_arrotondato;
   }
@@ -28,7 +31,9 @@ $(document).ready(function(){
     var stelline = '<i class="fas fa-star"></i>';
     var stelline_vuote = '<i class="far fa-star"></i>';
     var result = '';
+    // 5 perchè 5 sono le stelle
     for (var i = 0; i < 5; i++) {
+      // if per stampare le stelle vuote oltre il voto fino a 5
       if (i < stelline_length) {
         result = result.concat(stelline);
       } else{
@@ -38,6 +43,9 @@ $(document).ready(function(){
     return result
   }
 
+  // funzione per assegnare ad ogni lingua
+  // (tra quelle previste nello switch) la sua bandiera,
+  // se nn c'è rimane la sigla
   function disegna_bandiere(lang){
     var result ;
 
@@ -65,6 +73,8 @@ $(document).ready(function(){
   }
 
   function chiamata_ajax(testo_input){
+// funziona che effettua chiamata ajax per i film
+//ricevo come rispota un array di oggetti film
     $.ajax({
     	'url': api_url_base + 'search/movie',
     	'data': {
@@ -76,31 +86,72 @@ $(document).ready(function(){
     	'success': function(data_response){
       	var movies = data_response.results;
         console.log(movies);
-
-        for (var i = 0; i < movies.length; i++) {
-          var movie = movies[i];
-          var titolo = movie.title;
-          var titolo_originale = movie.original_title;
-          var lingua = disegna_bandiere(movie.original_language);
-          var voto = movie.vote_average;
-          var voto_ridotto =  arrotonda_voto(voto);
-          var voto_in_stelle = disegna_stelle(voto_ridotto);
-          var handlebars_variable = {
-            'title' : titolo,
-            'original_title' : titolo_originale,
-            'language' : lingua,
-            'rating' : voto_in_stelle,
-          }
-          var html_locandina = template_function(handlebars_variable);
-          $('#locandine').append(html_locandina);
-        }
+        // funzione per stampare i film tramite handlebars
+        stampa_film (movies);
     	},
     	'error':function(){
       	alert('si è verificato un errore');
     	}
     });
 
+    $.ajax({
+    	'url': api_url_base + 'search/tv',
+    	'data': {
+      	'api_key' : 'e1a570909ce0a6c2e9851825c79f7b37',
+      	'query' : testo_input,
+        'language' : 'it'
+    	},
+    	'method':'GET',
+    	'success': function(data_response){
+      	var series = data_response.results;
+        series = adatta_serie(series);
+        stampa_film (series);
+    	},
+    	'error':function(){
+      	alert('si è verificato un errore');
+    	}
+    });
+
+
   }
+
+  //funzione per adattare le serie (l'array delle serie) allo stesso formato dei film
+  //perchè 2 campi (name e original name) son diversi, gli altri 2 uguali
+  function adatta_serie (serie) {
+    var serie_sistemate = [];
+    for (var i = 0; i < serie.length; i++) {
+      var nuova_serie ={
+        'title' : serie[i].name,
+        'original_title' : serie[i].original_name,
+        'vote_average' : serie[i].vote_average,
+        'original_language' : serie[i].original_language
+      }
+      serie_sistemate.push(nuova_serie);
+    }
+    return serie_sistemate;
+  }
+
+// funzione che uso sia per stampare i film sia le serie
+  function stampa_film (movies){
+    for (var i = 0; i < movies.length; i++) {
+      var movie = movies[i];
+      var titolo = movie.title;
+      var titolo_originale = movie.original_title;
+      var lingua = disegna_bandiere(movie.original_language);
+      var voto = movie.vote_average;
+      var voto_ridotto =  arrotonda_voto(voto);
+      var voto_in_stelle = disegna_stelle(voto_ridotto);
+      var handlebars_variable = {
+        'title' : titolo,
+        'original_title' : titolo_originale,
+        'language' : lingua,
+        'rating' : voto_in_stelle,
+      }
+      var html_locandina = template_function(handlebars_variable);
+      $('#locandine').append(html_locandina);
+    }
+  }
+
 
 
 
