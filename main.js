@@ -167,9 +167,17 @@ $(document).ready(function(){
       var html_locandina = template_function(handlebars_variable);
       $('#locandine').append(html_locandina);
     }
-  }
+  };
 
+  $(document).on('mouseenter', '.contenitore_scheda', function(){
+    $(this).children('img').addClass('hidden');
+    $(this).children('.dati').addClass('active');
+  });
 
+  $(document).on('mouseleave', '.contenitore_scheda', function(){
+    $(this).children('img').removeClass('hidden');
+    $(this).children('.dati').removeClass('active');
+  });
 
 
 })

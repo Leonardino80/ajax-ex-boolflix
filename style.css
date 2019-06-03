@@ -96,6 +96,23 @@ h3{
   height: 20px;
 }
 
-img{
+.scheda > .contenitore_scheda > img{
   max-width: 185px;
+}
+
+.scheda > .contenitore_scheda > img.hidden{
+  display: none;
+}
+
+.scheda .dati{
+  display: none;
+}
+
+.scheda .dati.active{
+  display: block;
+}
+
+.contenitore_scheda{
+  width: 185px;
+  height: 278px;
 }
