@@ -1,6 +1,8 @@
 $(document).ready(function(){
 
   var api_url_base = 'https://api.themoviedb.org/3/';
+  var img_url_base = 'https://image.tmdb.org/t/p/';
+  var dimensione_poster = 'w185';
 
   var source = $('#template_scheda').html();
   var template_function = Handlebars.compile(source);
@@ -124,7 +126,9 @@ $(document).ready(function(){
         'title' : serie[i].name,
         'original_title' : serie[i].original_name,
         'vote_average' : serie[i].vote_average,
-        'original_language' : serie[i].original_language
+        'original_language' : serie[i].original_language,
+        'type' : 'serie TV',
+        'image_cover' : serie[i].poster_path
       }
       serie_sistemate.push(nuova_serie);
     }
@@ -141,11 +145,24 @@ $(document).ready(function(){
       var voto = movie.vote_average;
       var voto_ridotto =  arrotonda_voto(voto);
       var voto_in_stelle = disegna_stelle(voto_ridotto);
+      //per evitare i casi in qui il campo è vuoto
+      if(typeof movie.type !=='undefined'){
+        var tipo = movie.type;
+      }
+      if(movie.poster_path == null){
+        var url_poster = 'image-not-available.jpg'
+      } else{
+        var url_poster = img_url_base + dimensione_poster + movie.poster_path;
+      }
+
+      // inizializzo le variabili di handlebars
       var handlebars_variable = {
         'title' : titolo,
         'original_title' : titolo_originale,
         'language' : lingua,
         'rating' : voto_in_stelle,
+        'type' : tipo,
+        'image_cover' : url_poster
       }
       var html_locandina = template_function(handlebars_variable);
       $('#locandine').append(html_locandina);
